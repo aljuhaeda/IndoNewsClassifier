@@ -44,7 +44,7 @@ IndoBERT improved macro-F1 by +0.0705 (+8.8% relative) with **no class regressio
 
 ## Demo
 
-*Link goes here once deployed to HuggingFace Spaces.*
+**Live**: [indonewsclassifier.streamlit.app](https://indonewsclassifier.streamlit.app/) — paste an Indonesian news title, get a predicted category and a confidence chart. Serves the TF-IDF + Logistic Regression baseline (deployed on Streamlit Community Cloud, not HuggingFace Spaces — Spaces now requires a paid PRO plan for Docker/Streamlit hosting on CPU, which would've broken this project's no-paid-compute constraint).
 
 ## Repo structure
 
@@ -52,7 +52,7 @@ IndoBERT improved macro-F1 by +0.0705 (+8.8% relative) with **no class regressio
 IndoNewsClassifier/
 ├── notebooks/     EDA → preprocessing → baseline → transformer → evaluation
 ├── src/           reusable modules (preprocessing, training, inference)
-├── models/        committed baseline checkpoint (transformer weights on HF Hub instead)
+├── models/        committed baseline checkpoint (IndoBERT weights aren't committed — see notebook Section 5 to reproduce and optionally push to HF Hub)
 ├── docs/          confusion matrices, charts for this README
 ├── app.py         Streamlit inference app
 └── requirements.txt
@@ -82,8 +82,8 @@ Open `notebooks/indonewsclassifier.ipynb`. Sections 1–4 (EDA, preprocessing, b
 - [x] TF-IDF + Logistic Regression baseline
 - [x] IndoBERT fine-tune
 - [x] Model comparison
-- [x] Streamlit app (verified locally)
-- [ ] Deployed to HuggingFace Spaces
+- [x] Streamlit app
+- [x] Deployed (Streamlit Community Cloud)
 
 ## License
 
