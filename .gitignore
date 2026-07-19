@@ -5,8 +5,9 @@ __pycache__/
 venv/
 env/
 
-# raw data (link to source in README instead)
+# raw + derived data (regenerable from the notebook; link to source in README instead)
 data/raw/
+data/processed_*.csv
 
 # large model artifacts (keep only committable checkpoints)
 models/*.bin

@@ -1,12 +1,14 @@
 """Prediction helpers shared by the notebook and the Streamlit app."""
 
-from src.preprocessing import clean_text
+from src.preprocessing import clean_text, get_stopwords, light_clean_text
 from src.training import load_baseline
+
+_STOPWORDS = get_stopwords()
 
 
 def predict_baseline(pipeline, text: str) -> tuple[str, dict[str, float]]:
     """Return (predicted_label, {label: probability}) for one raw title."""
-    cleaned = clean_text(text)
+    cleaned = clean_text(text, stopwords=_STOPWORDS)
     label = pipeline.predict([cleaned])[0]
     proba = pipeline.predict_proba([cleaned])[0]
     scores = dict(zip(pipeline.classes_, proba))
@@ -17,7 +19,7 @@ def predict_indobert(model, tokenizer, text: str) -> tuple[str, dict[str, float]
     """Return (predicted_label, {label: probability}) for one raw title using a fine-tuned IndoBERT model."""
     import torch
 
-    cleaned = clean_text(text)
+    cleaned = light_clean_text(text)
     inputs = tokenizer(cleaned, return_tensors="pt", truncation=True, padding=True, max_length=64)
     with torch.no_grad():
         logits = model(**inputs).logits

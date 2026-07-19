@@ -46,7 +46,7 @@ def load_baseline(path: str) -> Pipeline:
 def train_indobert(
     train_df: pd.DataFrame,
     val_df: pd.DataFrame,
-    text_col: str = "title_clean",
+    text_col: str = "title_light_clean",
     label_col: str = "category",
     model_name: str = "indobenchmark/indobert-base-p1",
     output_dir: str = "models/indobert-news",
