@@ -1,7 +1,6 @@
 """Training routines for the TF-IDF baseline and IndoBERT fine-tune."""
 
 import joblib
-import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -43,6 +42,21 @@ def load_baseline(path: str) -> Pipeline:
     return joblib.load(path)
 
 
+def build_hf_dataset(df: pd.DataFrame, tokenizer, label2id: dict, text_col: str = "title_light_clean", label_col: str = "category"):
+    """Tokenize a dataframe into a HF Dataset. Shared by train/val/test so encoding stays identical."""
+    from datasets import Dataset
+
+    ds = Dataset.from_pandas(
+        pd.DataFrame(
+            {
+                "text": df[text_col].tolist(),
+                "label": df[label_col].map(label2id).tolist(),
+            }
+        )
+    )
+    return ds.map(lambda batch: tokenizer(batch["text"], truncation=True, padding="max_length", max_length=64), batched=True)
+
+
 def train_indobert(
     train_df: pd.DataFrame,
     val_df: pd.DataFrame,
@@ -58,9 +72,9 @@ def train_indobert(
 
     Import of transformers/torch is deferred to keep this module importable
     (for the baseline path / Streamlit app) even where torch isn't installed.
+
+    Returns (trainer, tokenizer, label2id, id2label).
     """
-    import torch
-    from datasets import Dataset
     from transformers import (
         AutoModelForSequenceClassification,
         AutoTokenizer,
@@ -75,19 +89,8 @@ def train_indobert(
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-    def to_hf_dataset(df: pd.DataFrame) -> Dataset:
-        ds = Dataset.from_pandas(
-            pd.DataFrame(
-                {
-                    "text": df[text_col].tolist(),
-                    "label": df[label_col].map(label2id).tolist(),
-                }
-            )
-        )
-        return ds.map(lambda batch: tokenizer(batch["text"], truncation=True, padding="max_length", max_length=64), batched=True)
-
-    train_ds = to_hf_dataset(train_df)
-    val_ds = to_hf_dataset(val_df)
+    train_ds = build_hf_dataset(train_df, tokenizer, label2id, text_col, label_col)
+    val_ds = build_hf_dataset(val_df, tokenizer, label2id, text_col, label_col)
 
     model = AutoModelForSequenceClassification.from_pretrained(
         model_name, num_labels=len(labels), id2label=id2label, label2id=label2id
@@ -116,4 +119,19 @@ def train_indobert(
     trainer.train()
     trainer.save_model(output_dir)
     tokenizer.save_pretrained(output_dir)
-    return trainer, id2label
+    return trainer, tokenizer, label2id, id2label
+
+
+def evaluate_indobert(trainer, test_df: pd.DataFrame, tokenizer, label2id: dict, id2label: dict, text_col: str = "title_light_clean", label_col: str = "category"):
+    """Return classification report dict, confusion matrix array, and sorted label list for a fine-tuned IndoBERT trainer."""
+    test_ds = build_hf_dataset(test_df, tokenizer, label2id, text_col, label_col)
+    pred_output = trainer.predict(test_ds)
+    preds = pred_output.predictions.argmax(axis=-1)
+
+    y_true = [id2label[i] for i in pred_output.label_ids]
+    y_pred = [id2label[i] for i in preds]
+
+    labels = sorted(label2id.keys())
+    report = classification_report(y_true, y_pred, output_dict=True)
+    cm = confusion_matrix(y_true, y_pred, labels=labels)
+    return report, cm, labels

@@ -24,9 +24,9 @@ IndoNewsClassifier/
 
 ## Status
 
-- [ ] EDA
-- [ ] TF-IDF + Logistic Regression baseline
-- [ ] IndoBERT fine-tune
+- [x] EDA
+- [x] TF-IDF + Logistic Regression baseline (82.8% accuracy, 0.80 macro-F1 on test set)
+- [ ] IndoBERT fine-tune (notebook Section 5 is ready — needs to be run on Colab GPU)
 - [ ] Streamlit app
 - [ ] Deployed to HuggingFace Spaces
 - [ ] Results filled into this README
