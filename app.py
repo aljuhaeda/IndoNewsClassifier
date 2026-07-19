@@ -1,5 +1,7 @@
 """Streamlit demo: paste an Indonesian news title, get a predicted category."""
 
+from pathlib import Path
+
 import altair as alt
 import pandas as pd
 import streamlit as st
@@ -9,7 +11,7 @@ from src.training import load_baseline
 
 st.set_page_config(page_title="IndoNewsClassifier", page_icon="📰")
 
-MODEL_PATH = "models/tfidf_logreg.joblib"
+MODEL_PATH = Path(__file__).parent / "models" / "tfidf_logreg.joblib"
 
 
 @st.cache_resource
