@@ -82,7 +82,7 @@ Open `notebooks/indonewsclassifier.ipynb`. Sections 1–4 (EDA, preprocessing, b
 - [x] TF-IDF + Logistic Regression baseline
 - [x] IndoBERT fine-tune
 - [x] Model comparison
-- [ ] Streamlit app
+- [x] Streamlit app (verified locally)
 - [ ] Deployed to HuggingFace Spaces
 
 ## License
