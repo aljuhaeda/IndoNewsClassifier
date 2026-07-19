@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# raw data (link to source in README instead)
+data/raw/
+
+# large model artifacts (keep only committable checkpoints)
+models/*.bin
+models/*.safetensors
+models/indobert*/
+
+# secrets / env
+.env
+
+# OS
+.DS_Store
+Thumbs.db
