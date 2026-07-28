@@ -26,14 +26,17 @@ title = st.text_area("Paste an Indonesian news title", height=100)
 
 if st.button("Classify", type="primary") and title.strip():
     model = get_model()
-    label, scores = predict_baseline(model, title)
+    try:
+        label, scores = predict_baseline(model, title)
+    except ValueError as e:
+        st.warning(str(e))
+    else:
+        st.subheader(f"Predicted category: `{label}`")
 
-    st.subheader(f"Predicted category: `{label}`")
-
-    scores_df = pd.DataFrame(sorted(scores.items(), key=lambda kv: kv[1], reverse=True), columns=["category", "confidence"])
-    chart = (
-        alt.Chart(scores_df)
-        .mark_bar()
-        .encode(x="confidence:Q", y=alt.Y("category:N", sort="-x"), tooltip=["category", "confidence"])
-    )
-    st.altair_chart(chart, use_container_width=True)
+        scores_df = pd.DataFrame(sorted(scores.items(), key=lambda kv: kv[1], reverse=True), columns=["category", "confidence"])
+        chart = (
+            alt.Chart(scores_df)
+            .mark_bar()
+            .encode(x="confidence:Q", y=alt.Y("category:N", sort="-x"), tooltip=["category", "confidence"])
+        )
+        st.altair_chart(chart, use_container_width=True)

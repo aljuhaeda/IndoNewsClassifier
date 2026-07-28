@@ -9,6 +9,8 @@ _STOPWORDS = get_stopwords()
 def predict_baseline(pipeline, text: str) -> tuple[str, dict[str, float]]:
     """Return (predicted_label, {label: probability}) for one raw title."""
     cleaned = clean_text(text, stopwords=_STOPWORDS)
+    if not cleaned.strip():
+        raise ValueError("Title has no usable content after cleaning (only punctuation/stopwords/non-Latin text).")
     label = pipeline.predict([cleaned])[0]
     proba = pipeline.predict_proba([cleaned])[0]
     scores = dict(zip(pipeline.classes_, proba))
