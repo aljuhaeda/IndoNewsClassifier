@@ -41,3 +41,14 @@ on first visit within ~30s.)
 
 ## Next up
 - Nothing scheduled.
+
+## Verification log (continued)
+- 2026-07-28: fresh audit found a real logic bug — `predict_baseline`
+  only checked the raw title for emptiness, but predicts on cleaned text
+  (`clean_text` strips non-Latin/punctuation-only input down to an empty
+  string). A garbage title silently produced a confident-looking fake
+  prediction instead of an error. Fixed: `predict_baseline` now raises
+  `ValueError` when cleaning empties the input, and the app shows a
+  warning instead. Verified directly against the deployed model
+  (empty-after-cleaning input now raises; a normal title still predicts
+  correctly).
