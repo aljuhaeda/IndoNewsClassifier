@@ -23,7 +23,9 @@ on first visit within ~30s.)
 
 ## Known issues / honest limitations
 - Free-tier Streamlit hosting sleeps after inactivity — first visitor
-  after a dormant period gets a ~20-30s cold start, not an error.
+  after a dormant period gets a slow cold start, not an error. Slower
+  than previously documented: a live re-check (2026-07-29) was still
+  mid-boot past 35s, not the ~20-30s this used to say.
 - IndoBERT weights aren't committed to the repo (documented in README;
   reproducible via the notebook, optionally pushed to HF Hub).
 - Model trained on a single 6-month window (Jan-Jun 2020) from one
