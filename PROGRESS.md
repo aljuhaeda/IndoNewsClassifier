@@ -15,8 +15,8 @@ on first visit within ~30s.)
 - README documents dataset source, reproduction steps, and limitations
   honestly (single time window overlapping COVID onset, 13.3x class
   imbalance, `news` as a catch-all overlapping category).
-- Was already the strongest repo in the portfolio audit — no fixes
-  needed.
+- Fixed a real empty-input prediction bug (2026-07-28) — see
+  Verification log (continued) below.
 
 ## In progress
 - Nothing currently active.
