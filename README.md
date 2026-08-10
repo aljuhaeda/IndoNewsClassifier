@@ -44,6 +44,8 @@ IndoBERT improved macro-F1 by +0.0705 (+8.8% relative) with **no class regressio
 
 ## Demo
 
+![App screenshot](docs/app-screenshot.png)
+
 **Live**: [indonewsclassifier.streamlit.app](https://indonewsclassifier.streamlit.app/) — paste an Indonesian news title, get a predicted category and a confidence chart. Serves the TF-IDF + Logistic Regression baseline (deployed on Streamlit Community Cloud, not HuggingFace Spaces — Spaces now requires a paid PRO plan for Docker/Streamlit hosting on CPU, which would've broken this project's no-paid-compute constraint).
 
 ## Repo structure
