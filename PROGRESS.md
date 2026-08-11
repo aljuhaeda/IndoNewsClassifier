@@ -54,3 +54,5 @@ on first visit within ~30s.)
   warning instead. Verified directly against the deployed model
   (empty-after-cleaning input now raises; a normal title still predicts
   correctly).
+- 2026-08-11: reviewed commits since last check (README screenshot only)
+  — no app/model code changed, status unaffected.
