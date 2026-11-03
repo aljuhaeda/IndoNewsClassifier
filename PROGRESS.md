@@ -9,8 +9,11 @@ on first visit within ~30s.)
 - EDA, TF-IDF+LogReg baseline, fine-tuned IndoBERT, side-by-side
   comparison — all in `notebooks/indonewsclassifier.ipynb`.
 - Real results reported honestly with both accuracy and macro-F1 (not
-  just the flattering number): TF-IDF 82.79% acc / 0.80 F1, IndoBERT
-  89.66% acc / 0.8705 F1, no per-class regressions from the transformer.
+  just the flattering number): TF-IDF 82.82% acc / 0.8008 F1 (re-run
+  from the repo's code 2026-11-03; the original notebook run recorded
+  82.79% / 0.8000, likely a library-version effect), IndoBERT 89.66% acc
+  / 0.8705 F1 and no per-class regressions from the transformer (reported
+  from the notebook's saved output, not re-reproduced).
 - Streamlit inference app (`app.py`) deployed and live.
 - README documents dataset source, reproduction steps, and limitations
   honestly (single time window overlapping COVID onset, 13.3x class

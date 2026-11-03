@@ -25,10 +25,12 @@ Test set, 13,634 titles (15% stratified split), 9 classes:
 
 | Model | Accuracy | Macro F1 | Trainable params | Training hardware |
 |---|---|---|---|---|
-| TF-IDF + Logistic Regression | 82.79% | 0.8000 | 180,009 | Laptop CPU, seconds |
-| **IndoBERT (fine-tuned)** | **89.66%** | **0.8705** | 124,448,265 | Colab T4 GPU, ~15 min (3 epochs) |
+| TF-IDF + Logistic Regression (re-reproduced 2026-11-03) | 82.82% | 0.8008 | 180,009 | Laptop CPU, seconds |
+| **IndoBERT (fine-tuned)** (reported, not re-reproduced) | **89.66%** | **0.8705** | 124,448,265 | Colab T4 GPU, ~15 min (3 epochs) |
 
-IndoBERT improved macro-F1 by +0.0705 (+8.8% relative) with **no class regressions** — every one of the 9 categories improved, with the largest gains on the baseline's weakest classes (`health`: 0.692→0.806 F1, `travel`: 0.738→0.813 F1). Full per-class breakdown and discussion of the accuracy/cost trade-off are in the notebook's comparison section.
+IndoBERT improved macro-F1 by +0.0705 (+8.8% relative) with **no class regressions** — every one of the 9 categories improved, with the largest gains on the baseline's weakest classes (`health`: 0.692→0.806 F1, `travel`: 0.738→0.813 F1). These gain figures (and the IndoBERT row) are **reported from the notebook's saved output, not re-reproduced** — the fine-tune needs a GPU and the weights aren't in the repo. Full per-class breakdown and discussion of the accuracy/cost trade-off are in the notebook's comparison section.
+
+The baseline was re-run from this repo's code on 2026-11-03 (same seed-42 70/15/15 split, 13,634 test rows) and gave 82.82% accuracy / 0.8008 macro-F1. The notebook's original run recorded 82.79% / 0.8000; the tiny difference is likely a library-version effect. Per-class baseline F1 differs by about 0.001 (`health` 0.691 vs 0.692, `travel` 0.739 vs 0.738), so the per-class gains above are computed from the original-run baseline values.
 
 ### Confusion matrices
 
@@ -75,6 +77,7 @@ Open `notebooks/indonewsclassifier.ipynb`. Sections 1–4 (EDA, preprocessing, b
 
 - **Titles only, not full article text.** Shorter input than a full-article classifier would get; a trade-off for having a clean, single-label, already-classification-ready dataset within the project's time budget.
 - **Single time window (Jan–Jun 2020), single source (detik.com).** The window overlaps COVID-19 onset in Indonesia, so "corona"/"virus"/"pandemi" dominate vocabulary across nearly every category — the model's learned vocabulary is skewed toward one global event rather than being representative of Indonesian news in general. A model trained on this data may not generalize as well to other periods or outlets.
+- **Random split, not forward-in-time.** The train/val/test split is random within Jan–Jun 2020, so results don't show performance on later news.
 - **Class imbalance**: `news` (32,330 titles) vs. `sport` (2,434), a 13.3x ratio. Macro-F1 is reported alongside accuracy specifically because of this.
 - **`news` is a catch-all category** that overlaps semantically with the other 8 — it's the largest source of confusion for both models (see confusion matrices above).
 
