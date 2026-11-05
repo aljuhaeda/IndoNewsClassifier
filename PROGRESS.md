@@ -45,7 +45,7 @@ on first visit within ~30s.)
   requests or console errors.
 
 ## Next up
-- `requirements.txt` pins (2026-11-03) are committed locally, not pushed: numpy 2.5.1 needs Python 3.12+; pandas/scikit-learn/matplotlib pins need 3.11+. Check the app's Python setting in Streamlit Cloud, then push and confirm the app boots.
+- `requirements.txt` pins are live (`b299a93`, Cloud runs Python 3.14). Checked live 2026-11-05: page renders and a test sports title returned `sport`, no exception. The `RuntimeError: Expected ASGI message` seen in the Cloud log on 2026-11-03 was not re-read and its cause stays unknown; the slow load that day did not recur.
 - Nothing scheduled.
 
 ## Verification log (continued)
